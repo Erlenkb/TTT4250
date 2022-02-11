@@ -22,16 +22,24 @@ def _calculate_log_mean(lst):
             if(i == 0): val1 = val
             else : val1 = avg_db
             val2 = lst[i+1]
-            x, y = _getPressure(val1, val2)
-            avg = (y-x) / (val2 - val1)
-            avg_db = round(10*np.log10((avg / po)),1)
+            #x, y = _getPressure(val1, val2)
+
+            x = 10**6
+            y = 10**7
+
+            avg = (x-y) / ((6 - 7))
+            avg_db = round(10*np.log10(avg),1)
     print(avg_db)
 
 
-
-
+array = np.array([[1,2,3,4],[5,6]])
+print(" ##########", array[0])
+#print(array[1][1])
+#array = np.zeros((2,4))
+#print(array)
+#print("shape0 = {}, shape1 = {}".format(array.shape[0], array.shape[1]))
 #_calculate_mean(70, 60, 60)
 
-_calculate_log_mean([60,70])
+print(_calculate_log_mean([60,61]))
 
 #print (3 / 2)
