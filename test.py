@@ -32,6 +32,11 @@ def _calculate_log_mean(lst):
     print(avg_db)
 
 
+test_arr = [1,1,1,1,1,1,1]
+nparr = np.array(test_arr)
+print("shape =",np.shape(nparr))
+shape = np.shape(nparr)
+
 array = np.array([[1,2,3,4],[5,6]])
 print(" ##########", array[0])
 #print(array[1][1])
@@ -41,5 +46,6 @@ print(" ##########", array[0])
 #_calculate_mean(70, 60, 60)
 
 print(_calculate_log_mean([60,61]))
-
+print("#####", (2*0.465*0.25)+(2*0.3*0.25)+0.3*0.465)
+print("######",(2*2.465*1.25)+(2*2.03*1.25)+(2.465*2.03))
 #print (3 / 2)
