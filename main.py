@@ -10,6 +10,20 @@ Octave_bands = [16,31.5,63,125,250,500,1000,2000,4000,8000,16000]
 Octave_bands2 = [125,250,500,1000,2000,4000,8000]
 po = 20*(10**(-5))
 
+
+#### Font details
+SMALL_SIZE = 12
+MEDIUM_SIZE = 14
+BIGGER_SIZE = 16
+
+plt.rc('font', size=SMALL_SIZE)
+plt.rc('axes', titlesize=SMALL_SIZE)
+plt.rc('axes', labelsize=MEDIUM_SIZE)
+plt.rc('xtick', labelsize=SMALL_SIZE)
+plt.rc('ytick', labelsize=SMALL_SIZE)
+plt.rc('legend', fontsize=SMALL_SIZE)
+plt.rc('figure', titlesize=BIGGER_SIZE)
+
 ##Metode 1
 Header_list = ["Name","Start", "Time","Duration","Unit","LAeq",	"LAFmax","LAFmin","LAE","LApeak","LCeq","LCFmax","LCFmin","LCE","LCpeak","LZeq","LZFmax","LZFmin","LZE","LZpeak","Lfeq 16 Hz","Lfeq 31.5 Hz","Lfeq 63 Hz", "Lfeq 125 Hz", "Lfeq 250 Hz", "Lfeq 500 Hz", "Lfeq 1 kHz", "Lfeq 2 kHz", "Lfeq 4 kHz", "Lfeq 8 kHz", "Lfeq 16 kHz", "LfFmax 16 Hz", "LfFmax 31.5 Hz", "LfFmax 63 Hz", "LfFmax 125 Hz", "LfFmax 250 Hz", "LfFmax 500 Hz", "LfFmax 1 kHz", "LfFmax 2 kHz", "LfFmax 4 kHz", "LfFmax 8 kHz", "LfFmax 16 kHz", "LfFmin 16 Hz", "LfFmin 31.5 Hz", "LfFmin 63 Hz", "LfFmin 125 Hz", "LfFmin 250 Hz", "LfFmin 500 Hz", "LfFmin 1 kHz", "LfFmin 2 kHz", "LfFmin 4 kHz", "LfFmin 8 kHz", "LfFmin 16 kHz", "LfE 16 Hz", "LfE 31.5 Hz", "LfE 63 Hz", "LfE 125 Hz", "LfE 250 Hz", "LfE 500 Hz", "LfE 1 kHz", "LfE 2 kHz", "LfE 4 kHz", "LfE 8 kHz", "LfE 16 kHz"]
 Positions = ["1","1","1","2","2","2","3","3","3","4","4","4","5","5","5",]
@@ -38,10 +52,9 @@ test = True
 ref = True
 M2 = True
 Noise_Val = 4
+length = 15
+width=8
 M = 2 # 0 = M1, 1 = M2, 2 = M1 & M2
-
-
-
 
 #######################################################################
 
@@ -65,6 +78,7 @@ def _M2LAeq():
 
 def _getPressure(val1, val2):
     return 10**(val1 / 10), 10**(val2 / 10)
+
 
 def _calculate_log_mean(lst):
     avg = 0
@@ -103,6 +117,7 @@ def _calculateLpiST(ST, LpiB, plot=False):
 
 def _plotSemilogx(lst, DeltaLf=False, title = ""):
     fig, ax = plt.subplots()
+
     lst = np.array(lst)
 
 
@@ -132,8 +147,8 @@ def _plotSemilogx(lst, DeltaLf=False, title = ""):
     #ax.semilogx(Octave_bands[3:-1], B, label=" Delta Lpi: Position {0}".format(i + 1))
     if DeltaLf :
         plt.axline((125,7),(8000,7),linestyle="--", linewidth=0.8, color="r", label="Seperation line for Grade 2&3")
-        plt.legend(loc="upper right")
-    else : plt.legend(loc="lower right")
+        plt.legend()
+    else : plt.legend()
 
     plt.show()
 
@@ -245,7 +260,7 @@ LpiRSS = np.array(LpiRSS)
 _soundPowerLevels(test, ref)
 _checkCorrected(test, LpiST)
 
-_calculateDeltaLf(ref, "RSS")
+_calculateDeltaLf(test, "RSS")
 _plotTSRSSB_Semilogx(ref,test,log_mean)
 _createLpiB(noise)
 
@@ -260,7 +275,7 @@ def _surfaceArea(lst):
     print (Sv)
     return Sv
 def _K2A(alpha):
-    Sv = _surfaceArea(room_size)
+    Sv = _surfaceArea(room_size) + 8.5*6.042
     S = _surfaceArea(M2_box)
     K2A = 10*np.log10(1 + (4*S / (alpha * Sv)))
     print("K2A = ", K2A)
@@ -304,7 +319,7 @@ def _AvgLpa(M2_arr):
         for y in LpA:
             temp += 10 ** (y / 10)
         out.append(10*np.log10(temp))
-        #out.append(_calculate_log_mean(LpA))
+
     temp = 0
     for i in out:
         temp += 10**(0.1 * i)
@@ -329,4 +344,4 @@ K1 = 0
 K2 = _K2A(0.05)
 S0 = 1
 S = _surfaceArea(M2_box)
-print(_LWAM2(_AvgLpa(met2),K1,K2,S,S0))
+print("LWA M2: ",_LWAM2(_AvgLpa(met2),K1,K2,S,S0))
